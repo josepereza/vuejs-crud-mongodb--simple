@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CRUD - Teste de Aptidão</title>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+  <div id="app" class="container">
+
+    <h1 class="center">Formulário de Usuários</h1>
+
+    <form>
+      <div class="form-group">
+        <label>Login:</label>
+        <input class="form-control" type="text" placeholder="Login" v-model="user.login">
+        <span v-show="errors.loginError" class="error-message">{{errors.loginError}}</span>
+      </div>
+      <div class="form-group">
+        <label>E-mail:</label>
+        <input class="form-control" type="text" placeholder="E-mail" v-model="user.email">
+        <span v-show="errors.emailError" class="error-message">{{errors.emailError}}</span>
+      </div>
+      <div class="form-group">
+        <label>Senha:</label>
+        <input class="form-control" type="password" placeholder="Senha" v-model="user.senha">
+        <span v-show="errors.senhaError" class="error-message">{{errors.senhaError}}</span>
+      </div>
+
+      <!-- Mensagem setada pelas operações -->
+      <div v-show="message" class="alert alert-info">
+        <a class="close" @click="closeMessage()">&times;</a>
+        <strong>{{message}}</strong>
+      </div>
+
+      <div class="form-group">
+        <!-- Se for alteração -->
+        <button v-if="isUpdate" @click="update($event)" class="btn btn-warning">Alterar</button>
+        <!-- Se for cadastro -->
+        <button v-else @click="save($event)" class="btn btn-info">Salvar</button>
+
+        <!--  Limpa o formulário -->
+        <button @click="resetInputs($event)" class="btn btn-dafault">Limpar</button>
+      </div>
+    </form>
+
+    <h2 class="center">Usuários</h2>
+
+    <div class="col-md-offset-8">
+      <input type="text" class="form-control" id="search" placeholder="Pesquisa" v-model="search">
+    </div>
+
+    <br>
+
+    <!-- Se há usuários de acordo com a pesquisa -->
+    <div v-if="filteredUsers.length">
+      <table class="table table-bordered">
+        <tr>
+          <th>Login</th>
+          <th>E-mail</th>
+          <th>Excluir</th>
+          <th>Alterar</th>
+        </tr>
+        <tr v-for="user in filteredUsers">
+          <td>{{user.login}}</td>
+          <td>{{user.email}}</td>
+          <td><button type="button" @click="remove(user)" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button></td>
+          <td><button type="button" @click="get(user)" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span></button></td>
+        </tr>
+      </table>
+    </div>
+    <!-- Se não há usuários de acordo com a pesquisa-->
+    <div v-else-if="users.length">
+      <h2>Nenhum usuário que corresponde a pesquisa "{{search}}"</h2>
+    </div>
+    <!-- Se não há usuários -->
+    <div v-else>
+      <h2>Nenhum usuário cadastrado</h2>
+    </div>
+
+
+  </div>
+  <script src="https://unpkg.com/vue"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
